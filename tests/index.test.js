@@ -4,19 +4,9 @@ import Tooltip from '../src';
 
 const verifyContent = (wrapper, content) => {
   expect(wrapper.find('.x-content').text()).toBe(content);
-  expect(
-    wrapper
-      .find('Trigger')
-      .instance()
-      .getPopupDomNode(),
-  ).toBeTruthy();
+  expect(wrapper.find('Trigger').instance().getPopupDomNode()).toBeTruthy();
   wrapper.find('.target').simulate('click');
-  expect(
-    wrapper
-      .find('.rc-tooltip')
-      .hostNodes()
-      .hasClass('rc-tooltip-hidden'),
-  ).toBe(true);
+  expect(wrapper.find('.rc-tooltip').hostNodes().hasClass('rc-tooltip-hidden')).toBe(true);
 };
 
 describe('rc-tooltip', () => {
@@ -84,12 +74,7 @@ describe('rc-tooltip', () => {
     const destroyVerifyContent = (wrapper, content) => {
       wrapper.find('.target').simulate('click');
       expect(wrapper.find('.x-content').text()).toBe(content);
-      expect(
-        wrapper
-          .find('Trigger')
-          .instance()
-          .getPopupDomNode(),
-      ).toBeTruthy();
+      expect(wrapper.find('Trigger').instance().getPopupDomNode()).toBeTruthy();
       wrapper.find('.target').simulate('click');
     };
     it('default value', () => {
@@ -148,6 +133,7 @@ describe('rc-tooltip', () => {
       expect(wrapper.html()).toBe('<div class="target">Click this</div>');
     });
   });
+
   describe('arrowVisible', () => {
     it('should show tooltip arrow default', () => {
       const wrapper = mount(
@@ -199,5 +185,17 @@ describe('rc-tooltip', () => {
         '<div class="rc-tooltip-content"><div class="rc-tooltip-inner" role="tooltip"><strong class="x-content">Tooltip content</strong></div></div>',
       );
     });
+  });
+
+  // This is only test for motion pass to internal rc-trigger
+  // It's safe to remove since meaningless to rc-tooltip if refactor
+  it('should motion props work', () => {
+    const wrapper = mount(
+      <Tooltip overlay="Light" motion={{ motionName: 'bamboo-is-light' }}>
+        <span>Bamboo</span>
+      </Tooltip>,
+    );
+
+    expect(wrapper.find('Trigger').props().popupMotion).toEqual({ motionName: 'bamboo-is-light' });
   });
 });

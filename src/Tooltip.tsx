@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { useRef, useImperativeHandle, forwardRef } from 'react';
-import Trigger, { TriggerProps } from 'rc-trigger';
-import { AlignType, AnimationType, ActionType } from 'rc-trigger/lib/interface';
+import Trigger from 'rc-trigger';
+import type { TriggerProps } from 'rc-trigger';
+import type { AlignType, AnimationType, ActionType } from 'rc-trigger/lib/interface';
 import { placements } from './placements';
 import Content from './Content';
 
@@ -10,10 +11,14 @@ export interface TooltipProps extends Pick<TriggerProps, 'onPopupAlign' | 'built
   defaultVisible?: boolean;
   visible?: boolean;
   placement?: string;
+  /** @deprecated Use `motion` instead */
   transitionName?: string;
+  /** @deprecated Use `motion` instead */
   animation?: AnimationType;
+  /** Config popup motion */
+  motion?: TriggerProps['popupMotion'];
   onVisibleChange?: (visible: boolean) => void;
-  afterVisibleChange?: () => void;
+  afterVisibleChange?: (visible: boolean) => void;
   overlay: (() => React.ReactNode) | React.ReactNode;
   overlayStyle?: React.CSSProperties;
   overlayClassName?: string;
@@ -48,6 +53,7 @@ const Tooltip = (props: TooltipProps, ref) => {
     afterVisibleChange,
     transitionName,
     animation,
+    motion,
     placement = 'right',
     align = {},
     destroyTooltipOnHide = false,
@@ -108,6 +114,7 @@ const Tooltip = (props: TooltipProps, ref) => {
       afterPopupVisibleChange={afterVisibleChange}
       popupTransitionName={transitionName}
       popupAnimation={animation}
+      popupMotion={motion}
       defaultPopupVisible={defaultVisible}
       destroyPopupOnHide={destroyTooltip}
       autoDestroy={autoDestroy}
